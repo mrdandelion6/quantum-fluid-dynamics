@@ -1,0 +1,190 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{calligra}
+\usepackage{mathpazo}
+\usepackage{tikz}
+\usepackage{changepage}
+\usepackage{microtype}
+\usepackage{nicefrac}
+\usepackage{forest}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{ifthen}
+\usepackage[super,comma,sort&compress]{natbib}
+
+% ==========================
+% ========== meta ==========
+
+\title{PHY473 Research Proposal: An Exploration of Quantum Algorithms for Fluid Dynamics \& Navier-Stokes}
+\author{Faisal Shaik}
+\date{August 2, 2025}
+
+% === link colors ===
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue,
+}
+% ===
+
+% === commands ===
+\newcommand{\sh}[1]{\vspace{0.2cm}\textbf{#1}\vspace{-0.4cm}\\\mbox{}}
+% ===
+
+% === par indentations ===
+\newenvironment{mypar}{%
+    \setlength{\parskip}{1em}%
+    \parindent=0pt%
+}{%
+    \par%
+}
+% ===
+
+% === section indentations ===
+\makeatletter
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+    {-5ex \@plus -1ex \@minus -.2ex}% above
+    {1ex \@plus .2ex}% below
+{\normalfont\large\bfseries}}%
+\makeatother
+% ===
+
+% === custom indentation ===
+\newenvironment{cindent}[1]{%
+    \par% start a new paragraph
+    \setlength{\leftskip}{#1}% set the left indentation
+    \noindent% no paragraph indentation
+    \ignorespaces% ignore spaces after \begin{customindent}
+}{%
+    \par% end the paragraph
+}
+% ===
+
+% === proof ===
+\renewenvironment{proof}{\noindent{\textit{proof.}}
+    \begin{cindent}{0.5cm}
+
+    \vspace{-0.5cm}}
+{\end{cindent}\hfill$\square$}
+% ===
+
+% === proof ===
+\newenvironment{subproof}{\noindent{\textit{subproof.}}
+    \begin{cindent}{0.5cm}
+
+    \vspace{-0.5cm}}
+{\end{cindent}\hfill$\blacksquare$}
+% ===
+
+% === thm ===
+\newenvironment{thm}[2][\unskip]{%
+    \vspace{0.2cm}
+    \noindent{\textbf{#1} \ifthenelse{\equal{#2}{\unskip}}{}{#2}}% check if the second argument is provided
+    \begin{cindent}{0.5cm}
+
+    \vspace{-0.5cm}}
+{\end{cindent}\hfill$\blacklozenge$}
+% ===
+
+
+% === tikz ===
+\tikzset{
+    every child/.style={
+        edge from parent/.style={draw, ->}
+    }
+}
+% ===
+
+% === links ===
+\newcommand{\fref}[2]{%
+    \faLink\hspace{2pt}\underline{\href{#1}{\textcolor{black}{#2}}}%
+}
+% ===
+
+% === other separation ===
+\setlist[itemize]{topsep=0.2em}
+% ===
+
+% ========== meta ==========
+% ==========================
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+\begin{mypar}
+    This paper proposes the following research topic for PHY473: \textbf{an exploration on quantum and quantum-classical hybrid algorithms for solving Navier-Stokes equations efficiently}.
+
+    \sh{Motivation:}
+
+    The Navier-Stokes equations are the holy grail of computational fluid dynamics , governing everything from aerospace flight vehicle design , weather forecasting , plasma magneto-hydrodynamics , and astrophysics. The problem is that \textbf{these nonlinear partial differential equations are computationally intractable for classical computers} when dealing with:
+    \begin{itemize}
+        \item turbulent flows at high Reynolds numbers
+        \item multi-scale phenomena from molecular to macroscopic scales
+        \item real-time applications like weather prediction or flight control
+    \end{itemize}
+    A quantum approach to finding flows of a Navier–Stokes fluid may prove to be less computationally intensive , providing the possibility for potential speedups , especially when used in conjunction with classical methods.
+\end{mypar}
+
+\section{The Goals}
+\begin{mypar}
+    There are many things to aim for in this research topic. Here is a brief overview of goals:
+    \begin{enumerate}
+        \item Develop a deep understanding of fluid mechanics and the Navier-Stokes equations , both in application and derivation.
+        \item Develop a deep understanding of quantum computing , and how quantum algorithms are made and used through both theory and application.
+        \item Develop a good understanding on the foundations of quantum mechanics and how they let quantum computers be possible.
+        \item Read existing scientific articles on the usage of quantum algorithms for solving Navier-Stokes flows and learn about these methods in depth.
+        \item Develop classical and quantum solvers for Navier-Stokes equations , compare different approaches , and investigate/make new classical-quantum hybrid algorithms.
+        \item Potentially publish a paper.
+    \end{enumerate}
+\end{mypar}
+
+\section{Existing Works}
+
+In addition to the works listed below , you can find many more interesting papers in the citations of said works.
+
+\begin{mypar}
+    \fref{https://www.nature.com/articles/s41534-020-00291-0}{\sh{Finding flows of a Navier–Stokes fluid through quantum computing}}
+
+    Gaitan et al. developed a quantum algorithm that provides quadratic speedup over classical random algorithms and exponential speedup over classical deterministic algorithms for rough/non-smooth flows.
+
+    The algorithm was validated using steady-state , inviscid compressible flow simulations in convergent divergent nozzles\cite{gaitan2020}. Such nozzles are critical components in propulsion systems , enabling the transition from subsonic to supersonic flow regimes\cite{gaitan2020}.
+
+    For rough flows (the computationally difficult case) , there exists a regime where the speedup is quadratic over classical random algorithms and exponential over deterministic algorithms\cite{gaitan2020}.
+
+    \fref{https://www.nature.com/articles/s42005-024-01623-8}{\sh{Quantum-inspired framework for computational fluid dynamics}}
+
+    Peddinti, R.D., Pisoni, S., Marini, A. et al. created a revolutionary approach to computational fluid dynamics (CFD) that doesn't actually use quantum computers , but instead borrows quantum mathematical techniques to achieve exponential speedups for classical fluid simulations\cite{peddinti2024}.
+
+    The framework is based on matrix-product states, a compressed representation of quantum states, providing memory and run time scaling logarithmically in the "mesh" size. Traditionally , CFD scales $\mathcal{O}(N^3)$ for memory and operations at every time step (when dealing with 3D flows). With this framework's scaling , they achieved $\mathcal{O}(logN)$\cite{peddinti2024}.
+
+    \fref{https://journals.aps.org/prresearch/abstract/10.1103/PhysRevResearch.5.033182}{\sh{Quantum computing of fluid dynamics using the hydrodynamic Schrödinger equation}}
+
+    Meng et al. present a fundamentally new approach to quantum fluid dynamics that solves the core problem of applying quantum computing to the nonlinear , non-Hamiltonian Navier-Stokes equations.
+
+    The breakthrough is transforming fluid dynamics into quantum mechanics by using the Hydrodynamic Schrödinger Equation (HSE) , derived by generalizing the Madelung transform to compressible or incompressible flows with finite vorticity and dissipation\cite{meng2023}. Since the HSE is expressed as a unitary operator on a two-component wave function, it is more suitable than the NSE for quantum computing.
+
+    The flow governed by the HSE can resemble a turbulent flow consisting of tangled vortex tubes with the five-thirds scaling of energy spectrum. This means the quantum formulation naturally reproduces the Kolmogorov energy cascade , which is the hallmark of turbulence\cite{meng2023} This is profound because it suggests quantum mechanics and turbulent fluid dynamics share deep mathematical structures.
+
+
+    \fref{https://www.sciencedirect.com/science/article/abs/pii/S0045793024003384}{\sh{Solving incompressible Navier–Stokes via a hybrid quantum–classical scheme}}
+
+    This paper presents the first practical demonstration of solving fluid dynamics problems on actual noisy quantum hardware , a major breakthrough in making quantum CFD a reality.
+
+    Song et al. present a hybrid quantum–classical algorithm for the incompressible Navier–Stokes equations. A classical device performs nonlinear computations, and a quantum one uses a variational solver for the pressure Poisson equation\cite{song2024}.
+
+    While other approaches focus on future fault-tolerant quantum computers, this paper actually implements and tests the algorithm on IBM's current noisy superconducting quantum processors.
+\end{mypar}
+
+\newpage
+\bibliographystyle{unsrt}
+\bibliography{references}
+\end{document}
