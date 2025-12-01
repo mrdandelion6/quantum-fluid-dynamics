@@ -1,0 +1,1 @@
+/opt/cuda/bin/nvcc -forward-unknown-to-host-compiler -O3 -DNDEBUG "--generate-code=arch=compute_61,code=[compute_61,sm_61]" -Xcompiler=-fPIC -Wno-deprecated-gpu-targets -shared -dlink --options-file CMakeFiles/fluid_sim.dir/deviceObjects1.rsp -o CMakeFiles/fluid_sim.dir/cmake_device_link.o --options-file CMakeFiles/fluid_sim.dir/deviceLinkLibs.rsp

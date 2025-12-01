@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/mnt/hdd2/study/bsc/y4/fall_courses/PHY473/QFD-PHY473/simulation/finite-volume-method/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
