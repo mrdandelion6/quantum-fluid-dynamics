@@ -1,0 +1,109 @@
+// Add this to fluid_solver.cu in the reset() function
+// Replace the "Simple initial condition" comment section
+
+// INTERESTING INITIAL CONDITIONS - Choose one:
+
+// Option 1: Vortex Ring
+/*
+   __global__ void initVortexRing(float* u, float* v, float* w,
+   int nx, int ny, int nz, float dx) {
+   int i = blockIdx.x * blockDim.x + threadIdx.x;
+   int j = blockIdx.y * blockDim.y + threadIdx.y;
+   int k = blockIdx.z * blockDim.z + threadIdx.z;
+
+   if (i >= nx || j >= ny || k >= nz) return;
+
+   int idx = i + nx*j + nx*ny*k;
+
+   float cx = nx * dx / 2.0f;
+   float cy = ny * dx / 2.0f;
+   float cz = nz * dx / 4.0f;
+
+   float x = i * dx - cx;
+   float y = j * dx - cy;
+   float z = k * dx - cz;
+
+   float r = sqrt(x*x + z*z);
+   float R = 0.3f; // Ring radius
+   float r0 = 0.15f; // Core radius
+
+   float dist = sqrt((r - R)*(r - R) + y*y);
+
+   if (dist < r0) {
+   float strength = 5.0f * exp(-dist*dist / (r0*r0));
+   float theta = atan2(z, x);
+
+   u[idx] = -strength * sin(theta);
+   v[idx] = 0.0f;
+   w[idx] = strength * cos(theta);
+   }
+   }
+ */
+
+// Option 2: Taylor-Green Vortex
+/*
+   __global__ void initTaylorGreen(float* u, float* v, float* w,
+   int nx, int ny, int nz, float dx) {
+   int i = blockIdx.x * blockDim.x + threadIdx.x;
+   int j = blockIdx.y * blockDim.y + threadIdx.y;
+   int k = blockIdx.z * blockDim.z + threadIdx.z;
+
+   if (i >= nx || j >= ny || k >= nz) return;
+
+   int idx = i + nx*j + nx*ny*k;
+
+   float x = (i * dx) / (nx * dx) * 2.0f * M_PI;
+   float y = (j * dx) / (ny * dx) * 2.0f * M_PI;
+   float z = (k * dx) / (nz * dx) * 2.0f * M_PI;
+
+   u[idx] =  sin(x) * cos(y) * cos(z);
+   v[idx] = -cos(x) * sin(y) * cos(z);
+   w[idx] = 0.0f;
+   }
+ */
+
+// Option 3: Rising Plume (like smoke)
+/*
+   __global__ void initRisingPlume(float* u, float* v, float* w,
+   int nx, int ny, int nz, float dx) {
+   int i = blockIdx.x * blockDim.x + threadIdx.x;
+   int j = blockIdx.y * blockDim.y + threadIdx.y;
+   int k = blockIdx.z * blockDim.z + threadIdx.z;
+
+   if (i >= nx || j >= ny || k >= nz) return;
+
+   int idx = i + nx*j + nx*ny*k;
+
+   float cx = nx * dx / 2.0f;
+   float cy = ny * dx / 2.0f;
+   float cz = nz * dx / 10.0f;
+
+   float x = i * dx - cx;
+   float y = j * dx - cy;
+   float z = k * dx - cz;
+
+   float r = sqrt(x*x + y*y);
+   float r0 = 0.2f;
+
+   if (r < r0 && z < 0.3f) {
+   float strength = 3.0f * exp(-r*r / (r0*r0));
+   u[idx] = 0.0f;
+   v[idx] = 0.0f;
+   w[idx] = strength; // Upward velocity
+   }
+   }
+ */
+
+// INSTRUCTIONS TO USE:
+// 1. Uncomment ONE of the options above
+// 2. Add kernel call in reset() function:
+//
+//    dim3 threads(8, 8, 8);
+//    dim3 blocks((nx + threads.x - 1) / threads.x,
+//                (ny + threads.y - 1) / threads.y,
+//                (nz + threads.z - 1) / threads.z);
+//
+//    initVortexRing<<<blocks, threads>>>(d_u, d_v, d_w, nx, ny, nz, dx);
+//    // OR initTaylorGreen<<<...>>>
+//    // OR initRisingPlume<<<...>>>
+//    cudaDeviceSynchronize();
