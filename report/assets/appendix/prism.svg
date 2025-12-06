@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400">
+    <!-- 3D rectangular prism with correct axes: x1 out of page (leftward), x2 to the right, x3 upward -->
+
+    <!-- back edges (dashed) -->
+    <!-- back vertical -->
+    <line x1="300" y1="250" x2="300" y2="100" stroke="black" stroke-width="2" stroke-dasharray="5,5"/>
+
+    <!-- top right back -->
+    <line x1="300" y1="100" x2="450" y2="100" stroke="black" stroke-width="2"/>
+
+    <!-- top left back -->
+    <line x1="300" y1="100" x2="200" y2="140" stroke="black" stroke-width="2"/>
+
+    <!-- front bottom edge -->
+    <line x1="200" y1="290" x2="350" y2="290" stroke="black" stroke-width="2"/>
+
+    <!-- front vertical edges -->
+    <line x1="200" y1="290" x2="200" y2="140" stroke="black" stroke-width="2"/>
+    <line x1="350" y1="290" x2="350" y2="140" stroke="black" stroke-width="2"/>
+
+    <!-- top front edge -->
+    <line x1="200" y1="140" x2="350" y2="140" stroke="black" stroke-width="2"/>
+
+    <!-- right face edges -->
+    <line x1="350" y1="290" x2="450" y2="250" stroke="black" stroke-width="2"/>
+    <line x1="350" y1="140" x2="450" y2="100" stroke="black" stroke-width="2"/>
+    <line x1="450" y1="250" x2="450" y2="100" stroke="black" stroke-width="2"/>
+
+    <!-- back left vertical edge -->
+    <line x1="300" y1="250" x2="450" y2="250" stroke="black" stroke-width="2" stroke-dasharray="5,5"/>
+
+    <!-- bottom left back -->
+    <line x1="300" y1="250" x2="200" y2="290" stroke="black" stroke-width="2" stroke-dasharray="5,5"/>
+
+    <!-- corner point x' (back bottom left corner) -->
+    <circle cx="300" cy="250" r="5" fill="#FF0000"/>
+    <text x="280" y="270" font-size="16" font-family="serif" font-weight="bold">$\mathbf{x}'$</text>
+
+    <!-- dimension labels -->
+    <!-- delta x_2 (horizontal, to the right) -->
+    <line x1="200" y1="310" x2="350" y2="310" stroke="#008000" stroke-width="2"/>
+    <line x1="200" y1="305" x2="200" y2="315" stroke="#008000" stroke-width="2"/>
+    <line x1="350" y1="305" x2="350" y2="315" stroke="#008000" stroke-width="2"/>
+    <text x="275" y="330" text-anchor="middle" font-size="16" font-family="serif">$\Delta x_2$</text>
+
+    <!-- delta x_3 (vertical, upward) -->
+    <line x1="180" y1="290" x2="180" y2="140" stroke="#800000" stroke-width="2"/>
+    <line x1="175" y1="290" x2="185" y2="290" stroke="#800000" stroke-width="2"/>
+    <line x1="175" y1="140" x2="185" y2="140" stroke="#800000" stroke-width="2"/>
+    <text x="160" y="215" text-anchor="middle" font-size="16" font-family="serif">$\Delta x_3$</text>
+
+    <!-- delta x_1 (going into page, leftward diagonal) -->
+    <line x1="200" y1="130" x2="300" y2="90" stroke="#0000FF" stroke-width="2"/>
+    <line x1="203" y1="125" x2="197" y2="135" stroke="#0000FF" stroke-width="2"/>
+    <line x1="303" y1="85" x2="297" y2="95" stroke="#0000FF" stroke-width="2"/>
+    <text x="250" y="100" text-anchor="middle" font-size="16" font-family="serif">$\Delta x_1$</text>
+
+    <!-- axes (in bottom left) -->
+    <defs>
+        <marker id="arrowblack" markerWidth="8" markerHeight="6" refX="7" refY="2" orient="auto">
+            <polygon points="0 0, 8 2, 0 4" fill="#000000"/>
+        </marker>
+    </defs>
+
+    <!-- x_2 axis (to the right) -->
+    <line x1="50" y1="360" x2="110" y2="360" stroke="#000000" stroke-width="2" marker-end="url(#arrowblack)"/>
+    <text x="120" y="365" font-size="16" font-family="serif" font-style="italic">$x_2$</text>
+
+    <!-- x_3 axis (upward) -->
+    <line x1="50" y1="360" x2="50" y2="304" stroke="#000000" stroke-width="2" marker-end="url(#arrowblack)"/>
+    <text x="45" y="294" font-size="16" font-family="serif" font-style="italic">$x_3$</text>
+
+    <!-- x_1 axis (out of page, leftward diagonal) - scaled by 1.1 then scaled down -->
+    <line x1="50" y1="360" x2="11.5" y2="379.25" stroke="#000000" stroke-width="2" marker-end="url(#arrowblack)"/>
+    <text x="1.5" y="395" font-size="16" font-family="serif" font-style="italic">$x_1$</text>
+</svg>

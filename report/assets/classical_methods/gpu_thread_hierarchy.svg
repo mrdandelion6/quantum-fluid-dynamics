@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 550">
+  <!-- Title -->
+  <text x="225" y="30" font-size="18" font-weight="bold" text-anchor="middle" fill="#333">GPU Thread Hierarchy</text>
+
+  <!-- Grid label and box -->
+  <text x="225" y="65" font-size="16" font-weight="bold" text-anchor="middle" fill="#4A90E2">Grid</text>
+  <rect x="30" y="80" width="390" height="440" fill="none" stroke="#4A90E2" stroke-width="3" stroke-dasharray="10,5" rx="8"/>
+
+  <!-- Block 0 -->
+  <g id="block0">
+    <rect x="50" y="100" width="160" height="120" fill="#E8F4FD" stroke="#2E5C8A" stroke-width="2" rx="5"/>
+    <text x="130" y="125" font-size="14" font-weight="bold" text-anchor="middle" fill="#2E5C8A">Block (0,0)</text>
+
+    <!-- Threads in Block 0 -->
+    <rect x="65" y="135" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="80" y="152" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T0</text>
+
+    <rect x="100" y="135" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="115" y="152" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T1</text>
+
+    <rect x="135" y="135" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="150" y="152" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T2</text>
+
+    <rect x="170" y="135" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="185" y="152" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T3</text>
+
+    <rect x="65" y="165" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="80" y="182" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T4</text>
+
+    <rect x="100" y="165" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="115" y="182" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T5</text>
+
+    <rect x="135" y="165" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="150" y="182" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T6</text>
+
+    <rect x="170" y="165" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="185" y="182" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T7</text>
+
+    <text x="130" y="205" font-size="16" text-anchor="middle" fill="#666">$\vdots$</text>
+  </g>
+
+  <!-- Block 1 -->
+  <g id="block1">
+    <rect x="230" y="100" width="160" height="120" fill="#E8F4FD" stroke="#2E5C8A" stroke-width="2" rx="5"/>
+    <text x="310" y="125" font-size="14" font-weight="bold" text-anchor="middle" fill="#2E5C8A">Block (1,0)</text>
+
+    <!-- Threads in Block 1 -->
+    <rect x="245" y="135" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="260" y="152" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T0</text>
+
+    <rect x="280" y="135" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="295" y="152" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T1</text>
+
+    <rect x="315" y="135" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="330" y="152" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T2</text>
+
+    <rect x="350" y="135" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="365" y="152" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T3</text>
+
+    <rect x="245" y="165" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="260" y="182" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T4</text>
+
+    <rect x="280" y="165" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="295" y="182" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T5</text>
+
+    <rect x="315" y="165" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="330" y="182" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T6</text>
+
+    <rect x="350" y="165" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="365" y="182" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T7</text>
+
+    <text x="310" y="205" font-size="16" text-anchor="middle" fill="#666">$\vdots$</text>
+  </g>
+
+  <!-- Block 2 -->
+  <g id="block2">
+    <rect x="50" y="235" width="160" height="120" fill="#E8F4FD" stroke="#2E5C8A" stroke-width="2" rx="5"/>
+    <text x="130" y="260" font-size="14" font-weight="bold" text-anchor="middle" fill="#2E5C8A">Block (0,1)</text>
+
+    <!-- Threads in Block 2 -->
+    <rect x="65" y="270" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="80" y="287" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T0</text>
+
+    <rect x="100" y="270" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="115" y="287" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T1</text>
+
+    <rect x="135" y="270" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="150" y="287" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T2</text>
+
+    <rect x="170" y="270" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <text x="185" y="287" font-size="9" text-anchor="middle" fill="white" font-weight="bold">T3</text>
+
+    <rect x="65" y="300" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <rect x="100" y="300" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <rect x="135" y="300" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <rect x="170" y="300" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+
+    <text x="130" y="345" font-size="16" text-anchor="middle" fill="#666">$\vdots$</text>
+  </g>
+
+  <!-- Block 3 -->
+  <g id="block3">
+    <rect x="230" y="235" width="160" height="120" fill="#E8F4FD" stroke="#2E5C8A" stroke-width="2" rx="5"/>
+    <text x="310" y="260" font-size="14" font-weight="bold" text-anchor="middle" fill="#2E5C8A">Block (1,1)</text>
+
+    <!-- Threads in Block 3 -->
+    <rect x="245" y="270" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <rect x="280" y="270" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <rect x="315" y="270" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+    <rect x="350" y="270" width="30" height="25" fill="#7ED321" stroke="#5FA319" stroke-width="1.5" rx="2"/>
+
+    <text x="310" y="315" font-size="16" text-anchor="middle" fill="#666">$\vdots$</text>
+  </g>
+
+  <!-- Dots for more blocks -->
+  <text x="225" y="395" font-size="24" text-anchor="middle" fill="#2E5C8A">$\vdots$</text>
+
+  <!-- Legend (no background box, single line) -->
+  <text x="225" y="450" font-size="9" text-anchor="middle" fill="#333" font-family="monospace">idx = blockIdx.x * blockDim.x + threadIdx.x</text>
+</svg>

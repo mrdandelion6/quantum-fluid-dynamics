@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 700">
+    <!-- GPU Section -->
+    <g id="gpu">
+        <!-- GPU Box -->
+        <rect x="60" y="390" width="280" height="280" fill="#F5F5F5" stroke="#333" stroke-width="2" rx="5"/>
+        <text x="200" y="420" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">GPU</text>
+
+        <!-- Small Control -->
+        <rect x="80" y="440" width="240" height="30" fill="#FF6B6B" stroke="#C92A2A" stroke-width="2" rx="3"/>
+        <text x="200" y="460" font-size="11" font-weight="bold" text-anchor="middle" fill="white">Simple Control</text>
+
+        <!-- Small Cache -->
+        <rect x="80" y="480" width="240" height="30" fill="#FFD93D" stroke="#F59F00" stroke-width="2" rx="3"/>
+        <text x="200" y="500" font-size="11" font-weight="bold" text-anchor="middle" fill="#333">Small Cache</text>
+
+        <!-- Many small cores in grid -->
+        <g id="gpu-cores">
+            <!-- Row 1 -->
+            <rect x="80" y="520" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="115" y="520" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="150" y="520" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="185" y="520" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="220" y="520" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="255" y="520" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="290" y="520" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+
+            <!-- Row 2 -->
+            <rect x="80" y="555" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="115" y="555" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="150" y="555" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="185" y="555" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="220" y="555" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="255" y="555" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="290" y="555" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+
+            <!-- Row 3 -->
+            <rect x="80" y="590" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="115" y="590" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="150" y="590" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="185" y="590" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="220" y="590" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="255" y="590" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="290" y="590" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+
+            <!-- Row 4 -->
+            <rect x="80" y="625" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="115" y="625" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="150" y="625" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="185" y="625" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="220" y="625" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="255" y="625" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+            <rect x="290" y="625" width="30" height="30" fill="#7ED321" stroke="#5FA319" stroke-width="1" rx="2"/>
+        </g>
+
+    </g>
+
+    <!-- Bottom label for GPU -->
+    <text x="200" y="685" font-size="13" font-weight="bold" text-anchor="middle" fill="#333">Thousands of simple cores</text>
+</svg>

@@ -1,3 +1,5 @@
 .tex/
 .out/
 *.gz
+svg-inkscape/
+*.fuse*

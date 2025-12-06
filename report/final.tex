@@ -505,7 +505,6 @@
             \label{fig:gpu_arch}
         \end{figure}
         \vspace{-0.4cm}
-
         To understand how GPUs achieve this parallelism , we need to examine their architecture more closely. A GPU organizes computation into a hierarchy of \textbf{threads}. A thread is the smallest unit of execution---a single instance of a program running on one core. Thousands of threads execute simultaneously on a GPU , each processing a different piece of data. Threads are grouped into \textbf{blocks} , and blocks are organized into a \textbf{grid}. This hierarchy allows programmers to map computational problems naturally: for a 3D fluid simulation , we might create a 3D grid of thread blocks , where each thread computes the update for one grid point. See \hyperref[fig:gpu_thread_hierarchy]{Figure~\ref{fig:gpu_thread_hierarchy}} in \hyperref[sec:figures]{Appendix C} for visualization.
 
         GPU programming typically involves two distinct code regions: \textbf{host code} and \textbf{device code}. The host is the CPU , which manages the overall program flow , allocates memory , and launches GPU computations. The device is the GPU , which executes the parallel computations. Data must be explicitly transferred between host memory (RAM) and device memory (GPU memory). The host code launches \textbf{kernels}---functions that run on the GPU---and specifies how many threads should execute the kernel and how they should be organized into blocks and grids.
@@ -525,9 +524,7 @@ float* partial, int N) {
             \caption{CUDA device code for parallel vector dot product computation.}
             \label{fig:cuda_dot_product_device}
         \end{figure}
-
-
-        \vspace{-0.4cm}
+        \vspace{-0.5cm}
         In this example , each thread computes one element of the element-wise product $a_i \cdot b_i$ in parallel. The variable \texttt{idx} uniquely identifies each thread's position in the global thread array. The kernel function marked with \texttt{\_\_global\_\_} runs on the GPU device , while the host code (see \hyperref[fig:cuda_dot_product]{Figure~\ref{fig:cuda_dot_product}} in \hyperref[sec:figures]{Appendix C} for the complete implementation) allocates GPU memory , copies data to the device , launches the kernel with the appropriate number of blocks and threads , and retrieves results. While this example shows the basic structure , real GPU programming involves many subtleties: memory coalescing (accessing memory in patterns that maximize bandwidth) , shared memory usage (fast on-chip cache shared by threads in a block) , thread synchronization , occupancy optimization (keeping all GPU cores busy) , and register pressure management (avoiding register spills to slower memory).
 
         These optimizations can dramatically affect performance---a naive GPU implementation might be only marginally faster than CPU code , while a well-optimized kernel can achieve over 10,000x speedups for highly parallelizable problems. The details of these optimizations are highly technical and device-specific , involving intimate knowledge of GPU memory hierarchies , warp scheduling , and hardware constraints. We will not delve deeply into these implementation details , as they are beyond the scope of this report. Instead , we focus on the algorithmic principles of the numerical methods themselves , understanding that efficient GPU implementations require careful attention to hardware characteristics.
@@ -564,13 +561,9 @@ float* partial, int N) {
 
         where $(x_i, y_j, z_k) = (i\Delta x, j\Delta x, k\Delta x)$ is the center of the cell. We use the index notation $(i,j,k)$ to uniquely identify each cell , with $i \in \{0, 1, \ldots, N_x-1\}$ , $j \in \{0, 1, \ldots, N_y-1\}$ , and $k \in \{0, 1, \ldots, N_z-1\}$.
 
-        [INSERT DIAGRAM]
-
         At each cell center , we store the three components of the velocity vector: $\mathbf{u}_{i,j,k} = (u_{i,j,k}, v_{i,j,k}, w_{i,j,k})$ , representing the velocity in the $x$, $y$, and $z$ directions respectively. We also store the pressure $p_{i,j,k}$ at cell centers. This data structure forms the foundation of our discretization---each cell contains all the fluid state variables needed to describe the local flow.
 
         The key to the FVM is computing fluxes across cell faces. Each cubic cell has six faces: left/right (perpendicular to $x$-axis) , front/back (perpendicular to $y$-axis) , and bottom/top (perpendicular to $z$-axis). For a cell $(i,j,k)$ , we denote the six neighboring cells as $(i\pm1, j, k)$ , $(i, j\pm1, k)$ , and $(i, j, k\pm1)$. The flux computation at a face requires interpolating or extrapolating values from neighboring cell centers to the face location.
-
-        [INSERT DIAGRAM]
 
         Consider the momentum equation. Integrating over cell $\Omega_{i,j,k}$ gives
         \[
@@ -672,8 +665,6 @@ if (k < nz / 4) {  // Bottom quarter of domain
 
         This is the \textit{semi-Lagrangian advection scheme}: to find the new velocity at grid point $\mathbf{x}$ , we trace backwards in time to find where a particle at $\mathbf{x}$ came from , then look up the velocity at that previous location. The scheme is called "semi-Lagrangian" because we trace Lagrangian particle paths but maintain an Eulerian grid.
 
-        [INSERT DIAGRAM]
-
         The algorithm proceeds as follows for each grid cell $(i,j,k)$:
 
         \begin{enumerate}
@@ -738,8 +729,9 @@ u_new[idx] = tx*ty*tz * u[i0 + nx*j0 + nx*ny*k0]
 
         Despite this inefficiency , the semi-Lagrangian method has major advantages: it is unconditionally stable (no CFL restriction) , handles large time steps well , and is relatively simple to implement. The stability comes from the fact that we are essentially solving the advection exactly along characteristics---there is no numerical diffusion or dispersion from discretizing derivatives. The price we pay is some numerical dissipation (velocities get slightly smoothed during interpolation) , but this is generally acceptable for visual simulations.
 
-        \vspace{-0.6cm}
+        \vspace{-0.2cm}
         \subsubsection{Diffusion (Viscous Term)}
+        \vspace{-0.2cm}
 
         The diffusion step solves the heat equation for each velocity component:
         \[
@@ -763,8 +755,6 @@ u_new[idx] = tx*ty*tz * u[i0 + nx*j0 + nx*ny*k0]
 \]
 
         This is a 7-point stencil: the value at $(i,j,k)$ and its 6 nearest neighbors. The discretization is second-order accurate , meaning the truncation error decreases as $(\Delta x)^2$ as the grid is refined.
-
-        [INSERT DIAGRAM]
 
         For time integration , we face a critical choice: explicit or implicit ? An \textbf{explicit scheme} like forward Euler would give
         \[
@@ -841,8 +831,9 @@ for (int iter = 0; iter < 20; iter++) {
 
         An important subtlety: implicit diffusion is unconditionally stable but not unconditionally accurate. Large time steps lead to excessive numerical diffusion , over-smoothing the velocity field. The choice of $\Delta t$ should still be guided by accuracy requirements , not just stability. In practice , we choose $\Delta t$ based on the desired frame rate and accept some over-diffusion as the price for large time steps.
 
-        \vspace{-0.6cm}
+        \vspace{-0.2cm}
         \subsubsection{Projection (Enforcing Incompressibility)}
+        \vspace{-0.2cm}
 
         After advection and diffusion , the velocity field $\mathbf{u}^{**}$ is not necessarily divergence-free. The projection step enforces the incompressibility constraint $\nabla \cdot \mathbf{u} = 0$ by decomposing the velocity into divergence-free and gradient components. This is the mathematical heart of the projection method and relies on the \textit{Helmholtz decomposition theorem}.
 
@@ -875,6 +866,7 @@ for (int iter = 0; iter < 20; iter++) {
 
         The algorithm proceeds in three sub-steps:
 
+        \vspace{0.2cm}
         \textbf{Sub-step 4a: Compute Divergence}
 
         First , we compute the divergence of the intermediate velocity field at each grid point. Using centered finite differences:
@@ -884,8 +876,6 @@ for (int iter = 0; iter < 20; iter++) {
                                                     &+ \frac{w_{i,j,k+1} - w_{i,j,k-1}}{2\Delta x}
             \end{aligned}
         \]
-
-        [INSERT DIAGRAM]
 
         This is a simple stencil operation requiring 6 memory reads per grid point. The implementation is:
 
@@ -899,6 +889,7 @@ div[idx] = -0.5f * dx * (
 
         Note the factor of $-0.5 \Delta x$ instead of division by $2\Delta x$---this is an optimization that folds the $\Delta x$ scaling into the pressure solve. The divergence computation is $O(N_x N_y N_z)$ and perfectly parallel.
 
+        \vspace{0.2cm}
         \textbf{Sub-step 4b: Solve Poisson Equation for Pressure}
 
         We must now solve $\nabla^2 p = \nabla \cdot \mathbf{u}^{**}$ for the pressure $p$. This is structurally identical to the diffusion equation---a Poisson equation on the grid. We use the same Jacobi iteration approach. Discretizing the Laplacian:
@@ -934,7 +925,7 @@ for (int iter = 0; iter < 30; iter++) {
         p[i,j-1,k] + p[i,j+1,k] +
         p[i,j,k-1] + p[i,j,k+1]
     ) / 6.0f;
-    
+
     cudaDeviceSynchronize();
     swap(p, p_new);
 }
@@ -942,6 +933,7 @@ for (int iter = 0; iter < 30; iter++) {
 
         The computational cost is $O(K_p \cdot N_x N_y N_z)$ where $K_p = 30$ is the iteration count. This is often the most expensive part of the entire time step because we need high accuracy to properly enforce incompressibility. Insufficient pressure iterations lead to visible artifacts: the flow "leaks" through boundaries or exhibits unphysical expansion/compression.
 
+        \vspace{0.2cm}
         \textbf{Sub-step 4c: Pressure Correction}
 
         Finally , we subtract the pressure gradient from the intermediate velocity:
@@ -956,8 +948,6 @@ for (int iter = 0; iter < 30; iter++) {
             w_{i,j,k}^{n+1} &= w_{i,j,k}^{**} - \frac{p_{i,j,k+1} - p_{i,j,k-1}}{2\Delta x}
         \end{align*}
 
-        [INSERT DIAGRAM]
-
         Implementation:
 
         \begin{lstlisting}[language=C++, basicstyle=\ttfamily\small]
@@ -970,8 +960,9 @@ w[idx] -= 0.5f * (p[i,j,k+1] - p[i,j,k-1]) / dx;
 
         The projection method is mathematically elegant but computationally expensive. The Poisson solve dominates the total cost---even with 30 iterations of Jacobi , convergence is slow for fine grids. State-of-the-art CFD codes use multigrid methods or preconditioned Krylov solvers (like GMRES or BiCGSTAB) to solve the pressure Poisson equation much faster , often achieving optimal $O(N)$ complexity. However , these advanced solvers are complex to implement and their GPU parallelization is non-trivial.
 
-        \vspace{-0.6cm}
+        \vspace{-0.2cm}
         \subsubsection{Boundary Conditions}
+        \vspace{-0.2cm}
 
         The final stage enforces boundary conditions at the walls of the computational domain. For our simulation , we use \textit{no-slip boundary conditions}: the velocity is zero at all wall surfaces. Physically , this represents the fact that fluid molecules stick to solid surfaces due to intermolecular forces.
 
@@ -990,8 +981,9 @@ if (i == 0 || i == nx-1 || j == 0 || j == ny-1 ||
 
         More sophisticated boundary conditions exist: free-slip (tangential velocity allowed , normal velocity zero) , inflow/outflow (prescribed velocity or pressure) , periodic (opposite boundaries identified) , etc. Each requires specialized handling. For complex geometries with curved boundaries , immersed boundary methods or cut-cell approaches are needed to accurately represent the interface.
 
-        \vspace{-0.6cm}
+        \vspace{-0.2cm}
         \subsubsection{Overall Algorithm Summary and Parallelization}
+        \vspace{-0.2cm}
 
         Combining all stages , the complete FVM algorithm for one time step is:
 
@@ -1028,8 +1020,10 @@ dim3 blocks(
 
         For comparison , a CPU implementation running on a single core would take $\sim$100-500 ms per time step---a speedup of 10-50x from GPU parallelization. The speedup is less than the theoretical maximum ($\sim$1000x based on core count) because we are memory-bound , not compute-bound. Further optimization would focus on memory access patterns: using shared memory for frequent neighbor accesses , coalescing memory transactions , and employing texture memory for interpolation.
 
-        \vspace{-0.6cm}
+
+        \vspace{-0.2cm}
         \subsubsection{Stability , Accuracy , and Convergence}
+        \vspace{-0.2cm}
 
         The FVM as presented has several important numerical properties that determine its effectiveness for different types of flows.
 
@@ -1150,8 +1144,9 @@ dim3 blocks(
 
         where $\ket{x}$ denotes the computational basis state corresponding to the binary representation of $x$ , and $\sum_{x=0}^{2^n-1} |\alpha_x|^2 = 1$.
 
-        \vspace{-0.6cm}
+        \vspace{-0.2cm}
         \subsubsection{Quantum Gates and Circuits}
+        \vspace{-0.2cm}
 
         Quantum computation proceeds through \textit{quantum gates}---unitary operators that evolve the quantum state. A unitary operator $U$ satisfies $U^\dagger U = U U^\dagger = I$ where $U^\dagger$ is the conjugate transpose (see \hyperref[def:conjugate_transpose]{Definition~\ref{def:conjugate_transpose}} in \hyperref[sec:appendix]{Appendix A}). Unitarity ensures that evolution preserves normalization.
 
@@ -1186,8 +1181,9 @@ dim3 blocks(
             \label{fig:cnot_hadamard_circuit}
         \end{figure}
 
-        \vspace{-0.6cm}
+        \vspace{-0.2cm}
         \subsubsection{Quantum Parallelism and Interference}
+        \vspace{-0.2cm}
 
         The power of quantum computing emerges from \textit{quantum parallelism} and \textit{quantum interference}. Consider a function $f: \{0,1\}^n \to \{0,1\}$ implemented as unitary $U_f$ with $U_f \ket{x}\ket{y} = \ket{x}\ket{y \oplus f(x)}$. Starting from the superposition $\ket{\psi_0} = \frac{1}{\sqrt{2^n}}\sum_{x=0}^{2^n-1} \ket{x} \ket{-}$ where $\ket{-} = \frac{1}{\sqrt{2}}(\ket{0} - \ket{1})$ , applying $U_f$ gives:
         \[
@@ -1198,8 +1194,9 @@ dim3 blocks(
 
         The Deutsch-Jozsa algorithm exploits this to determine whether $f$ is constant or balanced with a single query versus $2^{n-1} + 1$ queries classically---an exponential speedup. After applying $U_f$ and Hadamard gates $H^{\otimes n}$ , measurement yields $\ket{0}^{\otimes n}$ if and only if $f$ is constant.
 
-        \vspace{-0.6cm}
+        \vspace{-0.2cm}
         \subsubsection{Quantum Amplitude Encoding}
+        \vspace{-0.2cm}
 
         For quantum CFD algorithms , classical data must be encoded into quantum states. \textbf{Amplitude encoding} represents an $N$-dimensional vector $\mathbf{v} = (v_0, \ldots, v_{N-1})^T$ as:
         \[
@@ -1208,8 +1205,9 @@ dim3 blocks(
 
         where $N = 2^n$. A velocity field on a $64^3$ grid has $N = 262{,}144$ points , requiring only $n = 18$ qubits---exponential compression. However , preparing $\ket{\mathbf{v}}$ generally requires $O(N)$ gates , negating the advantage unless downstream quantum processing provides sufficient speedup. State preparation remains a major bottleneck.
 
-        \vspace{-0.6cm}
+        \vspace{-0.2cm}
         \subsubsection{Quantum Complexity and Speedups}
+        \vspace{-0.2cm}
 
         Quantum complexity distinguishes \textit{query complexity} (oracle calls) , \textit{gate complexity} (total gates) , and \textit{circuit depth} (sequential layers). Key quantum speedups include:
         \begin{itemize}
@@ -1222,8 +1220,9 @@ dim3 blocks(
 
         For CFD , this is problematic: we typically need full velocity fields for visualization and analysis. However , for specific tasks---computing drag coefficients , estimating turbulent statistics , solving pressure Poisson equations within classical workflows---quantum speedups may prove valuable.
 
-        \vspace{-0.6cm}
+        \vspace{-0.2cm}
         \subsubsection{Quantum Error and Decoherence}
+        \vspace{-0.2cm}
 
         Real quantum computers suffer from \textit{decoherence}---loss of quantum coherence from environmental interactions. Current superconducting qubits have coherence times $T_2 \sim 10$-$100 \, \mu s$ , limiting circuit depth to thousands of gates. Gate error probability $p \sim 10^{-3}$ means a circuit with $d$ gates has success probability $(1-p)^d \approx e^{-pd}$. For $d \sim 10^6$ gates , success is negligible without error correction.
 
@@ -1231,8 +1230,9 @@ dim3 blocks(
 
         Near-term \textit{Noisy Intermediate-Scale Quantum (NISQ)} devices with $\sim 100$-$1000$ qubits use shallow circuits (depth $\sim 10$-$100$) without error correction. NISQ algorithms like VQE and QAOA rely on error mitigation and hybrid classical-quantum approaches. For CFD , NISQ might address coarse-grained sub-problems while deferring full solutions to future fault-tolerant devices.
 
-        \vspace{-0.6cm}
+        \vspace{-0.2cm}
         \subsubsection{Relevance to Computational Fluid Dynamics}
+        \vspace{-0.2cm}
 
         Connecting quantum computing to CFD is non-obvious. Classical CFD excels at simulating continuous PDEs on grids. Quantum algorithms offer speedups for linear algebra , but Navier-Stokes equations are fundamentally nonlinear. Several approaches bridge this gap:
 
@@ -1253,8 +1253,10 @@ Turbulent flows represent one of the most computationally challenging regimes in
 
 It is precisely in this regime of rough , non-smooth flows that quantum algorithms may offer substantial computational advantages. Gaitan\cite{gaitan2020} demonstrated that quantum approaches to solving the Navier-Stokes equations can provide speedups when the driver function $f(U)$ exhibits low smoothness---a characteristic feature of turbulent flows. We examine two complementary approaches: using quantum amplitude estimation to accelerate Monte Carlo sampling of turbulent statistics , and applying quantum linear solvers to the implicit time-stepping schemes required for stable turbulent flow simulation.
 
-\vspace{-0.6cm}
-\subsubsection{Monte Carlo Approximation}
+
+        \vspace{-0.6cm}
+        \subsubsection{Monte Carlo Approximation}
+        \vspace{-0.2cm}
 
 Many practical applications of turbulence do not require the full spatiotemporal resolution of every eddy in the flow. Instead , engineers and scientists often seek statistical properties: mean velocity profiles , Reynolds stresses , turbulent kinetic energy dissipation rates , drag coefficients , or probability distributions of velocity fluctuations. These quantities can be estimated using Monte Carlo methods , which sample the flow field at random points and times to build up statistical averages.
 
@@ -1270,8 +1272,9 @@ For feasibility , we must consider the smoothness parameter $q$ of the underlyin
 
 Therefore , quantum-accelerated Monte Carlo is most promising for statistical analysis of fully-developed turbulence at high Reynolds numbers , where the flow exhibits significant roughness. Applications include estimating turbulent drag on aerospace vehicles , computing probability distributions of velocity increments for turbulence modeling , or sampling extreme events in atmospheric flows. The quadratic speedup could enable statistical convergence studies that are currently infeasible---for instance , accurately quantifying uncertainty in large-eddy simulation models or validating Reynolds-averaged Navier-Stokes closures against high-fidelity DNS data.
 
-\vspace{-0.6cm}
+\vspace{-0.2cm}
 \subsubsection{Quantum Amplitude Estimation}
+\vspace{-0.2cm}
 
 To understand how quantum amplitude estimation accelerates turbulent flow statistics , we briefly outline the algorithm's structure following Gaitan\cite{gaitan2020}. Suppose we wish to estimate the expectation value $\mu = \mathbb{E}[g(x)]$ where $x$ is sampled from some distribution relevant to the turbulent flow (for example , spatial locations in the domain or time instances along a trajectory) and $g(x)$ is a quantity of interest (such as local velocity magnitude or vorticity).
 
@@ -1320,8 +1323,9 @@ This must be solved for $\Delta \mathbf{U}^n$ at every cell $j$ and every time s
 
 Classical iterative solvers like GMRES or BiCGSTAB are the workhorses of industrial CFD codes , requiring $O(N)$ to $O(N \log N)$ operations per iteration depending on sparsity and conditioning. Quantum linear solvers offer the tantalizing prospect of exponential speedup: the HHL algorithm\cite{gaitan2020} achieves complexity $O(\log N \cdot s^2 \kappa^2 / \epsilon)$ where $s$ is the sparsity , $\kappa$ is the condition number , and $\epsilon$ is the desired accuracy. However , this theoretical advantage faces severe practical obstacles that we must address for quantum CFD to be viable.
 
-\vspace{-0.6cm}
+\vspace{-0.2cm}
 \subsubsection{Quantum Linear Solvers}
+\vspace{-0.2cm}
 
 Quantum linear solvers fall into two categories: direct methods like HHL that encode the solution in quantum amplitudes via phase estimation , and variational methods like VQLS that iteratively minimize a cost function in a hybrid quantum-classical loop\cite{Ye_2024}. Each approach has distinct advantages and limitations for CFD applications.
 
@@ -1344,8 +1348,9 @@ However , VQLS also faces challenges. Convergence is not guaranteed and depends 
 
 Most critically , both HHL and VQLS face the same output problem: they produce quantum states , not classical vectors. Quantum state tomography---the process of reconstructing the classical vector from measurement statistics---requires $O(N)$ measurements and post-processing , destroying the quantum advantage. Sparse tomography methods\cite{Ye_2024} can reduce this to $O(s \log N)$ for $s$-sparse vectors , but CFD velocity fields are not generally sparse in the computational basis. Recent work has explored reading out only specific quantities (drag coefficients , energy norms) without full tomography , but this limits applicability.
 
-\vspace{-0.6cm}
+\vspace{-0.2cm}
 \subsubsection{Sub-QLS with Krylov Subspace Methods}
+\vspace{-0.2cm}
 
 The mismatch between quantum linear solvers (which produce quantum states) and CFD requirements (which need classical vectors) can be partially resolved through \textbf{hybrid quantum-classical Krylov subspace methods}\cite{Ye_2024}. The key insight is to use quantum solvers not on the original $N$-dimensional system , but on a much smaller $k$-dimensional system where $k \ll N$ , making full state tomography tractable.
 
@@ -1370,13 +1375,6 @@ Despite these challenges , SUB-QLS represents a pragmatic path toward quantum-ac
 
 \end{mypar}
 
-    \section{Applications}
-    \begin{mypar}
-        \subsection{Aerospace Flight Vehicle Design}
-        \subsection{Weather Forecasting}
-        \subsection{Astrophysics}
-        \subsection{Blood Flows}
-    \end{mypar}
 \end{multicols}
 
 \newpage
