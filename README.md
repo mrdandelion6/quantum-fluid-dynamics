@@ -1,4 +1,4 @@
-# Quantum & Classical CFD for Navier Stokes Flows
+# Quantum & Classical CFD for Navier-Stokes Flows
 
 **author:** faisal shaik (@mrdandelion6)
 
