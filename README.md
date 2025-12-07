@@ -21,4 +21,3 @@ i have read various textbooks and research papers , all of which can be found in
 ## acknowledgments
 
 i began this research under the supervision of professor [Dennis Fernandes](https://www.linkedin.com/in/dennis-d-fernandes-phd-078342157/?originalSubdomain=ca) for the thesis course [PHY473](https://utm.calendar.utoronto.ca/course/phy473h5) at the university of toronto. it was thanks to his trust and enthusiasm towards my project proposal that i started my investigation into these topics. the version of my paper that i submitted as partial credit for PHY473 can be found in [`papers/PHY473/report.pdf`](papers/PHY473/report.pdf).
-
